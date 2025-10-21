@@ -1,0 +1,25 @@
+name: Agendamento — rodar apenas à noite
+on:
+  schedule:
+    - cron: '0 * * * *'  
+  workflow_dispatch:       
+
+jobs:
+  night-only:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checar horário (apenas noite)
+        run: |
+          # Pega a hora atual no runner (UTC)
+          hour=$(date +%H)
+          echo "Hora atual (UTC runner): $hour"
+
+          # Considera "noite" entre 20:00 e 06:59
+          if [ "$hour" -ge 19 ] || [ "$hour" -le 5 ]; then
+            echo "Está de noite — executando tarefa."
+           
+            echo "Executando job noturno..."
+          else
+            echo "Não é noite — encerrando sem fazer nada."
+            exit 0
+          fi
