@@ -1,0 +1,17 @@
+name: Mostrar Usuário do Push
+
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  identificar_usuario:
+    name: Identificar Usuário
+    runs-on: ubuntu-latest
+    steps:
+      - name: 1. Exibir Usuário
+       
+        run: echo "O usuário que realizou o push é:${{ github.actor }}"

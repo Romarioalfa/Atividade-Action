@@ -1,0 +1,21 @@
+name: Listar Arquivos do Repositório
+
+
+on: 
+  push:
+    branches:
+      - main
+  workflow_dispatch: 
+
+jobs:
+  listar_job:
+    name: Listar arquivo
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: 1. Checkout do Código
+        uses: actions/checkout@v4
+
+      - name: 2. Listar Arquivos (ls -Ra)
+       
+        run: ls -Ra

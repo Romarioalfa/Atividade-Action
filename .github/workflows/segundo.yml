@@ -1,0 +1,16 @@
+ name: Mostrar Data e Hora do Push
+ on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+ jobs:
+  exibir_data:
+    name: Registrar Timestamp
+    runs-on: ubuntu-latest
+    steps:
+      - name: 1. Mostrar Data e Hora
+        run: echo "O push ocorreu em:${{ github.event.head_commit.timestamp }}"
+        
+     
