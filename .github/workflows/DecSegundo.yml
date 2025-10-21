@@ -1,0 +1,23 @@
+name: Estatísticas agregadas do push
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  aggregate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Contar arquivos HTML/CSS/JS agregados
+        run: |
+          # Pega todos os arquivos adicionados ou modificados no push
+          FILES=$(jq -r '[.commits[].added? // [], .commits[].modified? // []] | flatten | .[]' "$GITHUB_EVENT_PATH" || echo "")
+
+          # Conta arquivos por tipo
+          HTML=$(echo "$FILES" | grep -i '\.html$' || true | wc -l)
+          CSS=$(echo "$FILES" | grep -i '\.css$' || true | wc -l)
+          JS=$(echo "$FILES" | grep -i '\.js$' || true | wc -l)
+
+          # Exibe resultado agregado
+          echo "Arquivos agregados no push -> html: $HTML, css: $CSS, js: $JS"
