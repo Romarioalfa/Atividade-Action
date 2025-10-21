@@ -1,0 +1,27 @@
+name: Criar ou atualizar README.md
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  create-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Criar README se não existir
+        run: |
+          if [ ! -f README.md ]; then
+            echo "# Projeto" > README.md
+            echo "" >> README.md
+            echo "README gerado automaticamente pelo workflow." >> README.md
+            git add README.md
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git commit -m "chore: adicionar README.md"
+            git push
+            echo "README.md criado e commitado."
+          else
+            echo "README.md já existe — nenhuma ação necessária."
+          fi
