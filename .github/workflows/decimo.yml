@@ -1,0 +1,37 @@
+name: Alertar arquivos > 100KB
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check-size:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verificar arquivos grandes e criar issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { execSync } = require('child_process');
+
+         
+            const bigFiles = execSync('find . -type f ! -path "./.git/*" -size +100k', { encoding: 'utf8' }).trim();
+
+            if (!bigFiles) {
+              console.log("Nenhum arquivo >100KB encontrado.");
+            } else {
+              console.log("Arquivos grandes encontrados:\n", bigFiles);
+              
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: '⚠️ Arquivos grandes detectados (>100KB)',
+                body: `Foram detectados arquivos maiores que 100KB no commit/push:\n\n\`\`\`\n${bigFiles}\n\`\`\`\nPor favor revise.`
+              });
+            }
