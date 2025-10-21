@@ -1,0 +1,22 @@
+name: Estatísticas simplificadas de arquivos
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  stats:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mostrar info básica
+        run: |
+          echo "Data: $(date --iso-8601=seconds)"
+          echo "Pusher: $GITHUB_ACTOR"
+          echo "Branch: $GITHUB_REF"
+
+      - name: Contar arquivos HTML/CSS/JS
+        run: |
+          HTML=$(git diff --name-only HEAD~1 HEAD | grep -i '\.html$' | wc -l)
+          CSS=$(git diff --name-only HEAD~1 HEAD | grep -i '\.css$' | wc -l)
+          JS=$(git diff --name-only HEAD~1 HEAD | grep -i '\.js$' | wc -l)
+
+          echo "Arquivos modificados neste push: html=$HTML css=$CSS js=$JS"
