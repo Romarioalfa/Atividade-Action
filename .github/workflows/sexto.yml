@@ -1,8 +1,7 @@
 name: Contar arquivos HTML
 
-
 on:
-  workflow_dispatch:
+  workflow_dispatch: 
 
 jobs:
   contar:
@@ -11,8 +10,10 @@ jobs:
       - name: Baixar o repositório
         uses: actions/checkout@v4
 
-      - name: Contar arquivos HTML
+      - name: Contar e listar arquivos HTML
         run: |
-          echo "Contando arquivos HTML..."
-          count=$(find . -name "*.html" | wc -l)
-          echo "Foram encontrados $count arquivos HTML."
+          echo "Procurando arquivos HTML..."
+          find . -type f -name "*.html"
+          echo "----------------------------"
+          echo "Total de arquivos HTML:"
+          find . -type f -name "*.html" | wc -l
